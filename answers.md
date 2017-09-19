@@ -11,5 +11,10 @@ as well! Why is this?
     - The server project has a `build.gradle` to build the Java-based server and the client project has its own `build.gradle` to handle the node and yarn stuff related to the client.
 3. How does the navbar work in this project? Is our SparkJava server
 the only thing doing routing?
+    - The navbar component has links to the frontend pages, which are references to Angular's routes.
+    - These links don't actually go to new HTML pages, but rather tell Angular what to display.
+    - `app.routes.ts` contains the routes to the various pages (components) in the frontend.
+    - This makes it so when you go to different URLS on the frontend, it changes the view being displayed accordingly.
+    - The routing done by the Spark server is only for the API.
 4. What does the `user-list.service.ts` do? Why is it not just done in
 the `user-list.component.ts`?
