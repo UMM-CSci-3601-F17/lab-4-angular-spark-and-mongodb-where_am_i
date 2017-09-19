@@ -13,3 +13,4 @@ as well! Why is this?
 the only thing doing routing?
 4. What does the `user-list.service.ts` do? Why is it not just done in
 the `user-list.component.ts`?
+    - It provides an implementation for the search function in the web page by importing the methods, providing the getUsers() and getUsersByID() functionality. It can't be done in the user component because that's where all of the declarations are made for the user type and where the methods are used.
