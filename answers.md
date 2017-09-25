@@ -18,5 +18,5 @@ the only thing doing routing?
     - The routing done by the Spark server is only for the API.
 4. What does the `user-list.service.ts` do? Why is it not just done in
 the `user-list.component.ts`?
-    - The 'user-list.service.ts' code defines methods that interact with the server and returns an Observeable type in response to a query
-    - The reason it's not all in 'user-list.component.ts' is because this is where the returned data is handled rather than declared, and it needs the 'user-list.service.ts' to return that Observable type to interact with the server separately.
+    - The `user-list.service.ts` code defines methods that interact with the server and returns an Observeable type in response to a query
+    - The reason it's not all in `user-list.component.ts` is because this is where the returned data is handled rather than declared, and it needs the `user-list.service.ts` to return that Observable type to interact with the server separately.
