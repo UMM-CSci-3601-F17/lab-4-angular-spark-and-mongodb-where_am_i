@@ -15,8 +15,8 @@ export class TodoListService {
     constructor(private http: Http) {
     }
 
-    getTodos(status?: boolean): Observable<Todo[]> {
-        let observable: Observable<any> = this.http.request(this.todoUrl + (status != null ? ("?status=" + (status ? "complete" : "incomplete")): ""));
+    getTodos(status?: string): Observable<Todo[]> {
+        let observable: Observable<any> = this.http.request(this.todoUrl + (!(status == null || status == "") ? "?status=" + status : ""));
         return observable.map(res => res.json());
     }
 

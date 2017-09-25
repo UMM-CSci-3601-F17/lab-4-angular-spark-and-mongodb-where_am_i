@@ -5,19 +5,22 @@ import {TodoListService} from "./todo-list.service";
 @Component({
     selector: 'todo-list-component',
     templateUrl: './todo-list.component.html',
-    providers: []
+    providers: [],
 })
 export class TodoListComponent implements OnInit {
 
     public todos: Todo[];
     public filteredTodos: Todo[];
 
+    public possibleCategories: string[] = ["software design", "homework", "video games", "groceries"];
+    public possibleOwners: string[] = ["Blanche", "Fry", "Roberta", "Dawn", "Workman"];
+
     constructor(private todoListService: TodoListService) {
     }
 
     onStatusChange(value: string): void {
         console.log(value);
-        this.todoListService.getTodos(value == "complete").subscribe(
+        this.todoListService.getTodos(value).subscribe(
             todos => {
                 this.todos = todos;
             },
