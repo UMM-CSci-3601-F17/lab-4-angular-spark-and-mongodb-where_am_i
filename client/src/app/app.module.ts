@@ -12,6 +12,7 @@ import {Routing} from './app.routes';
 import {FormsModule} from '@angular/forms';
 import {APP_BASE_HREF} from "@angular/common";
 import { TodoListComponent } from './todos/todo-list.component';
+import {TodoListService} from "./todos/todo-list.service";
 
 
 @NgModule({
@@ -32,6 +33,7 @@ import { TodoListComponent } from './todos/todo-list.component';
     ],
     providers: [
         UserListService,
+        TodoListService,
         {provide: APP_BASE_HREF, useValue: '/'}
     ],
     bootstrap: [AppComponent]

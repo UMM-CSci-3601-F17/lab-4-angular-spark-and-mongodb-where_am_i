@@ -12,7 +12,7 @@ export class TodoListService {
 
     private todoUrl: string = environment.API_URL + "todos";
 
-    constructor( private http: Http) {
+    constructor(private http: Http) {
     }
 
     getTodos(): Observable<Todo[]> {
