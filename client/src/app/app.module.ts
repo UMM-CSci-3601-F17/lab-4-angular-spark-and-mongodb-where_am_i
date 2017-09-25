@@ -27,7 +27,7 @@ import { TodoListComponent } from './todos/todo-list.component';
         HomeComponent,
         NavbarComponent,
         UserComponent,
-        UserListComponent
+        UserListComponent,
         TodoListComponent
     ],
     providers: [
