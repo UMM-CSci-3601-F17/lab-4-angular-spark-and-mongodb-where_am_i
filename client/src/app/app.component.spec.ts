@@ -31,10 +31,4 @@ describe('AppComponent', () => {
     it(`should have as title 'app'`, () => {
         expect(appInstance.title).toEqual('Angular Spark lab');
     });
-
-    it('should render title in a h1 tag', () => {
-        appFixture.detectChanges();
-        let h1: HTMLElement = debugElement.query(By.css('h1')).nativeElement;
-        expect(h1.textContent).toContain('Angular Spark lab');
-    });
 });
