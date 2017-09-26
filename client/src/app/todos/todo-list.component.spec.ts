@@ -5,6 +5,9 @@ import {Observable} from "rxjs/Observable";
 import {Todo} from "./todo";
 import {TodoListService} from "./todo-list.service";
 
+import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+import {FormsModule} from '@angular/forms';
+
 describe('TodoListComponent', () => {
     let component: TodoListComponent;
     let fixture: ComponentFixture<TodoListComponent>;
@@ -41,6 +44,7 @@ describe('TodoListComponent', () => {
         };
 
         TestBed.configureTestingModule({
+            imports:[FormsModule, TypeaheadModule.forRoot()],
             declarations: [TodoListComponent],
             providers: [{provide: TodoListService, useValue: todoListServiceStub}]
         })
@@ -79,5 +83,18 @@ describe('TodoListComponent', () => {
     it("has todos with status false", () => {
         expect(component.todos.filter((todo: Todo) => todo.status === false).length).toBe(2);
     });
+
+    it("filters todos by owner has correct number of todos", () => {
+        expect(component.filterTodos( "Fry", null, null).length).toBe(2);
+    });
+
+    it("filters todos by category has correct number of todos", () => {
+        expect(component.filterTodos( null, null, "homework").length).toBe(1);
+    });
+
+    it("Multiple filters has correct number of todos", () => {
+        expect(component.filterTodos( "Fry", null, "homework").length).toBe(1);
+    });
+
 
 });

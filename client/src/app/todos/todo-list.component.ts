@@ -5,7 +5,7 @@ import {TodoListService} from "./todo-list.service";
 @Component({
     selector: 'todo-list-component',
     templateUrl: './todo-list.component.html',
-    providers: [],
+    providers: []
 })
 export class TodoListComponent implements OnInit {
 
