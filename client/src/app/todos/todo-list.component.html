@@ -1,7 +1,7 @@
 <br>
 <div class="row">
     <div class="col-md-3" id="leftCol">
-        <h1>Todos</h1>
+        <h1 id="title">Todos</h1>
         <br>
         <div class="form-group">
             <label for="searchInput">Search</label>
@@ -12,8 +12,8 @@
             <input id="ownerInput" type="text" class="form-control" [typeahead]="possibleOwners" [(ngModel)]="todoOwner" placeholder="Filter by Owner">
         </div>
         <div class="form-group">
-            <label for="CategoryInput">Category</label>
-            <input id="CategoryInput" type="text" class="form-control" [typeahead]="possibleCategories" [(ngModel)]="todoCategory" placeholder="Filter by Category">
+            <label for="categoryInput">Category</label>
+            <input id="categoryInput" type="text" class="form-control" [typeahead]="possibleCategories" [(ngModel)]="todoCategory" placeholder="Filter by Category">
         </div>
         <div class="form-group">
             <label for="statusInput">Status</label>
@@ -27,14 +27,14 @@
     <div class="col-md-9" id="mainCol">
 
         <div class="card-columns" *ngIf="todos; else todosError">
-            <div class="card" id="users" *ngFor="let todo of this.filterTodos(todoOwner, todoBody, todoCategory)">
+            <div class="card todoCard" *ngFor="let todo of this.filterTodos(todoOwner, todoBody, todoCategory)">
                 <div class="card-body">
-                    <h6 class="card-subtitle mb-2 text-muted">{{ todo.owner }}</h6>
-                    <p class="card-text">{{ todo.body }}</p>
+                    <h6 class="card-subtitle mb-2 text-muted todoOwner">{{ todo.owner }}</h6>
+                    <p class="card-text todoBody">{{ todo.body }}</p>
                 </div>
                 <div class="card-footer">
-                    <span class="badge" [class.badge-success]="todo.status" [class.badge-danger]="!todo.status">{{ todo.status ? "Complete" : "Incomplete" }}</span>
-                    <span class="badge badge-secondary">{{ todo.category }}</span>
+                    <span class="badge todoStatus" [class.badge-success]="todo.status" [class.badge-danger]="!todo.status">{{ todo.status ? "Complete" : "Incomplete" }}</span>
+                    <span class="badge badge-secondary todoCategory">{{ todo.category }}</span>
                 </div>
             </div>
         </div>
