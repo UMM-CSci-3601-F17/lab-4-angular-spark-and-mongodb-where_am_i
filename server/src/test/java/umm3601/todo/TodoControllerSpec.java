@@ -232,4 +232,50 @@ public class TodoControllerSpec {
         assertEquals("Category should match", "homework", exampleTodoDoc.get("category"));
     }
 
+    @Test
+    public void addNewTodo() {
+        todoController.addNewTodo("testOwner", true, "test body", "testCategory");
+
+        Map<String, String[]> emptyMap = new HashMap<>();
+        String jsonResult = todoController.getTodos(emptyMap);
+        BsonArray docs = parseJsonArray(jsonResult);
+
+        assertEquals("Should be 5 todos", 5, docs.size());
+        List<String> owners = docs
+            .stream()
+            .map(TodoControllerSpec::getOwner)
+            .sorted()
+            .collect(Collectors.toList());
+        List<String> expectedOwners = Arrays.asList("Barry", "Blanche", "Fry", "Fry", "testOwner");
+        assertEquals("Owners should match", expectedOwners, owners);
+
+        List<String> categories = docs
+            .stream()
+            .map(TodoControllerSpec::getCategory)
+            .sorted()
+            .collect(Collectors.toList());
+        List<String> expectedCategories = Arrays.asList("homework", "homework", "software design", "testCategory", "video games");
+        assertEquals("Categories should match", expectedCategories, categories);
+    }
+
+    @Test
+    public void addMultipleNewTodo() {
+        todoController.addNewTodo("testOwner", true, "test body", "testCategory");
+
+        Map<String, String[]> emptyMap = new HashMap<>();
+        BsonArray docs = parseJsonArray(todoController.getTodos(emptyMap));
+
+        assertEquals("Should be 5 todos", 5, docs.size());
+
+        todoController.addNewTodo("testOwner", true, "test body", "testCategory");
+        docs = parseJsonArray(todoController.getTodos(emptyMap));
+
+        assertEquals("Should be 6 todos", 6, docs.size());
+
+        todoController.addNewTodo("testOwner", true, "test body", "testCategory");
+        docs = parseJsonArray(todoController.getTodos(emptyMap));
+
+        assertEquals("Should be 7 todos", 7, docs.size());
+    }
+
 }
