@@ -180,6 +180,18 @@ public class TodoControllerSpec {
         assertEquals("Owner should match", "Fry", docs.get(0).asDocument().get("owner").asString().getValue());
         assertEquals("Category should match", "homework", docs.get(0).asDocument().get("category").asString().getValue());
     }
+
+    @Test
+    public void getTodosLimited() {
+        Map<String, String[]> argMap = new HashMap<>();
+        argMap.put("limit", new String[]{"2"});
+        String jsonResult = todoController.getTodos(argMap);
+        BsonArray docs = parseJsonArray(jsonResult);
+
+
+        assertEquals("Should be 2 todos", 2, docs.size());
+    }
+
     public void getTodobyId() {
         String jsonResult = todoController.getTodo(exampleTodoID.toHexString());
         Document exampleTodoDoc = Document.parse(jsonResult);

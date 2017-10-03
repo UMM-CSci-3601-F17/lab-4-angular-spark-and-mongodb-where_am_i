@@ -127,6 +127,10 @@ public class TodoController {
         //FindIterable comes from mongo, Document comes from Gson
         FindIterable<Document> matchingTodos = todoCollection.find(filterDoc);
 
+        if(queryParams.containsKey("limit")) {
+            matchingTodos.limit(Integer.parseInt(queryParams.get("limit")[0]));
+        }
+
         return JSON.serialize(matchingTodos);
     }
 
