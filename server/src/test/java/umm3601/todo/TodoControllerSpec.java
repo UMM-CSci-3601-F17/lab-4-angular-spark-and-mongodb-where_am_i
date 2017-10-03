@@ -167,6 +167,19 @@ public class TodoControllerSpec {
         List<String> expectedCategories = Arrays.asList("homework", "homework");
         assertEquals("Categories should match", expectedCategories, categories);
     }
+
+    @Test
+    public void getTodosWithCategoryandOwner() {
+        Map<String, String[]> argMap = new HashMap<>();
+        argMap.put("category", new String[] { "homework" });
+        argMap.put("owner", new String[] { "Fry" });
+        String jsonResult = todoController.getTodos(argMap);
+        BsonArray docs = parseJsonArray(jsonResult);
+
+        assertEquals("Should be 1 todo", 1, docs.size());
+        assertEquals("Owner should match", "Fry", docs.get(0).asDocument().get("owner").asString().getValue());
+        assertEquals("Category should match", "homework", docs.get(0).asDocument().get("category").asString().getValue());
+    }
     public void getTodobyId() {
         String jsonResult = todoController.getTodo(exampleTodoID.toHexString());
         Document exampleTodoDoc = Document.parse(jsonResult);
