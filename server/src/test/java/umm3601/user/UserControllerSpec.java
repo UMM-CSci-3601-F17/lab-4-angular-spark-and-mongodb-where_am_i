@@ -92,6 +92,11 @@ public class UserControllerSpec
     }
 
     @Test
+    public void failTest() {
+        assertEquals(true, false);
+    }
+
+    @Test
     public void getAllUsers() {
         Map<String, String[]> emptyMap = new HashMap<>();
         String jsonResult = userController.getUsers(emptyMap);
