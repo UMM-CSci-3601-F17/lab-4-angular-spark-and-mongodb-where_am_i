@@ -128,6 +128,17 @@ public class TodoControllerSpec {
         assertEquals("Owners should match", expectedOwners, owners);
     }
 
+    @Test
+    public void getTodosWithStatus() {
+        Map<String, String[]> argMap = new HashMap<>();
+        argMap.put("status", new String[] { "complete" });
+        String jsonResult = todoController.getTodos(argMap);
+        BsonArray docs = parseJsonArray(jsonResult);
+
+        assertEquals("Should be 1 todo", 1, docs.size());
+        assertEquals("Status should match", true, docs.get(0).asDocument().get("status").asBoolean().getValue());
+    }
+
     public void getTodobyId() {
         String jsonResult = todoController.getTodo(exampleTodoID.toHexString());
         Document exampleTodoDoc = Document.parse(jsonResult);
