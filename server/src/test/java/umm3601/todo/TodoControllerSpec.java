@@ -139,6 +139,21 @@ public class TodoControllerSpec {
         assertEquals("Status should match", true, docs.get(0).asDocument().get("status").asBoolean().getValue());
     }
 
+    @Test
+    public void getTodosWithCategory() {
+        Map<String, String[]> argMap = new HashMap<>();
+        argMap.put("category", new String[] { "homework" });
+        String jsonResult = todoController.getTodos(argMap);
+        BsonArray docs = parseJsonArray(jsonResult);
+
+        assertEquals("Should be 2 todos", 2, docs.size());
+        List<String> categories = docs
+            .stream()
+            .map(TodoControllerSpec::getCategory)
+            .collect(Collectors.toList());
+        List<String> expectedCategories = Arrays.asList("homework", "homework");
+        assertEquals("Categories should match", expectedCategories, categories);
+    }
     public void getTodobyId() {
         String jsonResult = todoController.getTodo(exampleTodoID.toHexString());
         Document exampleTodoDoc = Document.parse(jsonResult);

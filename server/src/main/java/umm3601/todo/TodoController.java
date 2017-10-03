@@ -115,6 +115,9 @@ public class TodoController {
         if (queryParams.containsKey("status")) {
             filterDoc = filterDoc.append("status", queryParams.get("status")[0].equalsIgnoreCase("complete") || queryParams.get("status")[0].equalsIgnoreCase("true"));
         }
+        if (queryParams.containsKey("category")) {
+            filterDoc = filterDoc.append("category", queryParams.get("category")[0]);
+        }
 
         //FindIterable comes from mongo, Document comes from Gson
         FindIterable<Document> matchingTodos = todoCollection.find(filterDoc);
