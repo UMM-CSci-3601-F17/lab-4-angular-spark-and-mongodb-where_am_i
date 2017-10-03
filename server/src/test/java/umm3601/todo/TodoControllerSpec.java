@@ -82,18 +82,13 @@ public class TodoControllerSpec {
         return ((BsonString) doc.get("owner")).getValue();
     }
 
-    private static String getID(BsonValue val) {
-        BsonDocument doc = val.asDocument();
-        return ((BsonString) doc.get("_id")).getValue();
-    }
-
     private static String getCategory(BsonValue val) {
         BsonDocument doc = val.asDocument();
         return ((BsonString) doc.get("category")).getValue();
     }
 
     @Test
-    public void getAllUsers() {
+    public void getAllTodos() {
         Map<String, String[]> emptyMap = new HashMap<>();
         String jsonResult = todoController.getTodos(emptyMap);
         BsonArray docs = parseJsonArray(jsonResult);
@@ -117,6 +112,74 @@ public class TodoControllerSpec {
     }
 
     @Test
+    public void getTodosWithOwner() {
+        Map<String, String[]> argMap = new HashMap<>();
+        argMap.put("owner", new String[]{"Fry"});
+        String jsonResult = todoController.getTodos(argMap);
+        BsonArray docs = parseJsonArray(jsonResult);
+
+        assertEquals("Should be 2 todos", 2, docs.size());
+        List<String> owners = docs
+            .stream()
+            .map(TodoControllerSpec::getOwner)
+            .sorted()
+            .collect(Collectors.toList());
+        List<String> expectedOwners = Arrays.asList("Fry", "Fry");
+        assertEquals("Owners should match", expectedOwners, owners);
+    }
+
+    @Test
+    public void getTodosWithStatus() {
+        Map<String, String[]> argMap = new HashMap<>();
+        argMap.put("status", new String[] { "complete" });
+        String jsonResult = todoController.getTodos(argMap);
+        BsonArray docs = parseJsonArray(jsonResult);
+
+        assertEquals("Should be 1 todo", 1, docs.size());
+        assertEquals("Status should match", true, docs.get(0).asDocument().get("status").asBoolean().getValue());
+    }
+
+    @Test
+    public void getTodosWithBody() {
+        Map<String, String[]> argMap = new HashMap<>();
+        argMap.put("contains", new String[] { "In sunt ex non tempor cillum commodo" });
+        String jsonResult = todoController.getTodos(argMap);
+        BsonArray docs = parseJsonArray(jsonResult);
+
+        assertEquals("Should be 1 todo", 1, docs.size());
+        assertEquals("Body should match", "In sunt ex non tempor cillum commodo amet incididunt anim qui commodo quis. Cillum non labore ex sint esse.",
+            docs.get(0).asDocument().get("body").asString().getValue());
+        assertEquals("Owner should match", "Blanche", docs.get(0).asDocument().get("owner").asString().getValue());
+    }
+
+    @Test
+    public void getTodosWithCategory() {
+        Map<String, String[]> argMap = new HashMap<>();
+        argMap.put("category", new String[] { "homework" });
+        String jsonResult = todoController.getTodos(argMap);
+        BsonArray docs = parseJsonArray(jsonResult);
+
+        assertEquals("Should be 2 todos", 2, docs.size());
+        List<String> categories = docs
+            .stream()
+            .map(TodoControllerSpec::getCategory)
+            .collect(Collectors.toList());
+        List<String> expectedCategories = Arrays.asList("homework", "homework");
+        assertEquals("Categories should match", expectedCategories, categories);
+    }
+
+    @Test
+    public void getTodosWithCategoryandOwner() {
+        Map<String, String[]> argMap = new HashMap<>();
+        argMap.put("category", new String[] { "homework" });
+        argMap.put("owner", new String[] { "Fry" });
+        String jsonResult = todoController.getTodos(argMap);
+        BsonArray docs = parseJsonArray(jsonResult);
+
+        assertEquals("Should be 1 todo", 1, docs.size());
+        assertEquals("Owner should match", "Fry", docs.get(0).asDocument().get("owner").asString().getValue());
+        assertEquals("Category should match", "homework", docs.get(0).asDocument().get("category").asString().getValue());
+    }
     public void getTodobyId() {
         String jsonResult = todoController.getTodo(exampleTodoID.toHexString());
         Document exampleTodoDoc = Document.parse(jsonResult);

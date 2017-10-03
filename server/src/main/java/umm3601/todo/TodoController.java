@@ -12,6 +12,7 @@ import spark.Response;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -109,6 +110,19 @@ public class TodoController {
         Document filterDoc = new Document();
 
 
+        if (queryParams.containsKey("owner")) {
+            filterDoc = filterDoc.append("owner", queryParams.get("owner")[0]);
+        }
+        if (queryParams.containsKey("status")) {
+            filterDoc = filterDoc.append("status", queryParams.get("status")[0].equalsIgnoreCase("complete") || queryParams.get("status")[0].equalsIgnoreCase("true"));
+        }
+        if (queryParams.containsKey("category")) {
+            filterDoc = filterDoc.append("category", queryParams.get("category")[0]);
+        }
+        if (queryParams.containsKey("contains")) {
+            filterDoc = filterDoc.append("body", Pattern.compile(queryParams.get("contains")[0], Pattern.CASE_INSENSITIVE));
+            System.out.println(filterDoc);
+        }
 
         //FindIterable comes from mongo, Document comes from Gson
         FindIterable<Document> matchingTodos = todoCollection.find(filterDoc);
