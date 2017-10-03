@@ -82,18 +82,13 @@ public class TodoControllerSpec {
         return ((BsonString) doc.get("owner")).getValue();
     }
 
-    private static String getID(BsonValue val) {
-        BsonDocument doc = val.asDocument();
-        return ((BsonString) doc.get("_id")).getValue();
-    }
-
     private static String getCategory(BsonValue val) {
         BsonDocument doc = val.asDocument();
         return ((BsonString) doc.get("category")).getValue();
     }
 
     @Test
-    public void getAllUsers() {
+    public void getAllTodos() {
         Map<String, String[]> emptyMap = new HashMap<>();
         String jsonResult = todoController.getTodos(emptyMap);
         BsonArray docs = parseJsonArray(jsonResult);
@@ -117,6 +112,22 @@ public class TodoControllerSpec {
     }
 
     @Test
+    public void getTodosWithOwner() {
+        Map<String, String[]> argMap = new HashMap<>();
+        argMap.put("owner", new String[]{"Fry"});
+        String jsonResult = todoController.getTodos(argMap);
+        BsonArray docs = parseJsonArray(jsonResult);
+
+        assertEquals("Should be 2 todos", 2, docs.size());
+        List<String> owners = docs
+            .stream()
+            .map(TodoControllerSpec::getOwner)
+            .sorted()
+            .collect(Collectors.toList());
+        List<String> expectedOwners = Arrays.asList("Fry", "Fry");
+        assertEquals("Owners should match", expectedOwners, owners);
+    }
+
     public void getTodobyId() {
         String jsonResult = todoController.getTodo(exampleTodoID.toHexString());
         Document exampleTodoDoc = Document.parse(jsonResult);
