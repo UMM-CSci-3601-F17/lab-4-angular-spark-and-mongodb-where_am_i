@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Sorts;
 import com.mongodb.util.JSON;
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -126,6 +127,10 @@ public class TodoController {
 
         //FindIterable comes from mongo, Document comes from Gson
         FindIterable<Document> matchingTodos = todoCollection.find(filterDoc);
+
+        if(queryParams.containsKey("orderBy")) {
+            matchingTodos.sort(Sorts.ascending(queryParams.get("orderBy")[0]));
+        }
 
         if(queryParams.containsKey("limit")) {
             matchingTodos.limit(Integer.parseInt(queryParams.get("limit")[0]));
