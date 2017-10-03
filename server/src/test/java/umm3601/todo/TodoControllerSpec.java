@@ -104,7 +104,7 @@ public class TodoControllerSpec {
             .map(TodoControllerSpec::getOwner)
             .sorted()
             .collect(Collectors.toList());
-        List<String> expectedOwners = Arrays.asList("Blanche", "Fry", "Fry", "Barry");
+        List<String> expectedOwners = Arrays.asList("Barry", "Blanche", "Fry", "Fry");
         assertEquals("Owners should match", expectedOwners, owners);
 
         List<String> categories = docs
@@ -112,8 +112,8 @@ public class TodoControllerSpec {
             .map(TodoControllerSpec::getCategory)
             .sorted()
             .collect(Collectors.toList());
-        List<String> expectedCategories = Arrays.asList("software design", "video games", "homework", "homework");
-        assertEquals("Categorie should match", expectedCategories, categories);
+        List<String> expectedCategories = Arrays.asList("homework", "homework", "software design", "video games");
+        assertEquals("Categories should match", expectedCategories, categories);
     }
 
     @Test
