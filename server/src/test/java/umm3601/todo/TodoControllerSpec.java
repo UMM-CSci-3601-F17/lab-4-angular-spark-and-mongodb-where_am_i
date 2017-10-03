@@ -140,6 +140,19 @@ public class TodoControllerSpec {
     }
 
     @Test
+    public void getTodosWithBody() {
+        Map<String, String[]> argMap = new HashMap<>();
+        argMap.put("contains", new String[] { "In sunt ex non tempor cillum commodo" });
+        String jsonResult = todoController.getTodos(argMap);
+        BsonArray docs = parseJsonArray(jsonResult);
+
+        assertEquals("Should be 1 todo", 1, docs.size());
+        assertEquals("Body should match", "In sunt ex non tempor cillum commodo amet incididunt anim qui commodo quis. Cillum non labore ex sint esse.",
+            docs.get(0).asDocument().get("body").asString().getValue());
+        assertEquals("Owner should match", "Blanche", docs.get(0).asDocument().get("owner").asString().getValue());
+    }
+
+    @Test
     public void getTodosWithCategory() {
         Map<String, String[]> argMap = new HashMap<>();
         argMap.put("category", new String[] { "homework" });
