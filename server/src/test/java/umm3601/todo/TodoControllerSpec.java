@@ -192,6 +192,39 @@ public class TodoControllerSpec {
         assertEquals("Should be 2 todos", 2, docs.size());
     }
 
+    @Test
+    public void getTodosOrderbyOwner() {
+        Map<String, String[]> argMap = new HashMap<>();
+        argMap.put("orderBy", new String[]{"owner"});
+        String jsonResult = todoController.getTodos(argMap);
+        BsonArray docs = parseJsonArray(jsonResult);
+
+        assertEquals("Should be 4 todos", 4, docs.size());
+        List<String> owners = docs
+            .stream()
+            .map(TodoControllerSpec::getOwner)
+            .collect(Collectors.toList());
+        List<String> expectedOwners = Arrays.asList("Barry", "Blanche", "Fry", "Fry");
+        assertEquals("Owners should match", expectedOwners, owners);
+    }
+
+    @Test
+    public void getTodosOrderByCategory() {
+        Map<String, String[]> argMap = new HashMap<>();
+        argMap.put("orderBy", new String[] { "category" });
+        String jsonResult = todoController.getTodos(argMap);
+        BsonArray docs = parseJsonArray(jsonResult);
+
+        assertEquals("Should be 4 todos", 4, docs.size());
+        List<String> categories = docs
+            .stream()
+            .map(TodoControllerSpec::getCategory)
+            .collect(Collectors.toList());
+        List<String> expectedCategories = Arrays.asList("homework", "homework", "software design", "video games");
+        assertEquals("Categories should match", expectedCategories, categories);
+    }
+
+    @Test
     public void getTodobyId() {
         String jsonResult = todoController.getTodo(exampleTodoID.toHexString());
         Document exampleTodoDoc = Document.parse(jsonResult);
