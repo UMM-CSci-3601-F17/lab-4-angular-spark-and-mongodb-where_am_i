@@ -47,39 +47,38 @@ export class TodoListComponent implements OnInit {
         )
     }
 
-    public filterTodos(searchOwner: string, searchStatus: string, searchBody: string, searchCategory: string): Todo[] {
+    public filterTodos(): void {
         this.filteredTodos = this.todos;
 
-        if(searchOwner != null) {
-            searchOwner = searchOwner.toLocaleLowerCase();
+        if(this.todoOwner != null) {
+            this.todoOwner = this.todoOwner.toLocaleLowerCase();
             this.filteredTodos = this.filteredTodos.filter(todo => {
-                return !searchOwner || todo.owner.toLowerCase().indexOf(searchOwner) !== -1;
+                return !this.todoOwner || todo.owner.toLowerCase().indexOf(this.todoOwner) !== -1;
             })
         }
 
-        if(searchStatus != null && searchStatus != "") {
-            var searchStatusbool = searchStatus == "complete";
+        if(this.todoStatus != null && this.todoStatus != "") {
+            console.log(this.todoStatus);
+            var searchStatusbool : boolean = this.todoStatus == "complete";
+            console.log(searchStatusbool);
             this.filteredTodos = this.filteredTodos.filter(todo => {
-                return !searchStatus || todo.status == searchStatusbool;
+                return !this.todoStatus || todo.status == searchStatusbool;
             })
         }
 
-        if(searchCategory != null) {
-            searchCategory = searchCategory.toLocaleLowerCase();
+        if(this.todoCategory != null) {
+            this.todoCategory = this.todoCategory.toLocaleLowerCase();
             this.filteredTodos = this.filteredTodos.filter(todo => {
-                return !searchCategory || todo.category.toLowerCase().indexOf(searchCategory) !== -1;
+                return !this.todoCategory || todo.category.toLowerCase().indexOf(this.todoCategory) !== -1;
             })
         }
 
-        if(searchBody != null) {
-            searchBody = searchBody.toLocaleLowerCase();
+        if(this.todoBody != null) {
+            this.todoBody = this.todoBody.toLocaleLowerCase();
             this.filteredTodos = this.filteredTodos.filter(todo => {
-                return !searchBody || todo.body.toLowerCase().indexOf(searchBody) !== -1;
+                return !this.todoBody || todo.body.toLowerCase().indexOf(this.todoBody) !== -1;
             })
         }
-
-
-        return this.filteredTodos;
     }
 
     refreshTodos(): void {

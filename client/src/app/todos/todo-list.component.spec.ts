@@ -7,6 +7,8 @@ import {TodoListService} from "./todo-list.service";
 
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
+
 import {FormsModule} from '@angular/forms';
 
 describe('TodoListComponent', () => {
@@ -45,7 +47,7 @@ describe('TodoListComponent', () => {
         };
 
         TestBed.configureTestingModule({
-            imports:[FormsModule, TypeaheadModule.forRoot(), ModalModule.forRoot()],
+            imports:[FormsModule, TypeaheadModule.forRoot(), ModalModule.forRoot(), ProgressbarModule.forRoot()],
             declarations: [TodoListComponent],
             providers: [{provide: TodoListService, useValue: todoListServiceStub}]
         })
@@ -86,15 +88,25 @@ describe('TodoListComponent', () => {
     });
 
     it("filters todos by owner has correct number of todos", () => {
-        expect(component.filterTodos( "Fry",null, null, null).length).toBe(2);
+        component.todoOwner = "Fry";
+        component.filterTodos();
+        expect(component.todos.length).toBe(3);
+        expect(component.filteredTodos.length).toBe(2);
     });
 
     it("filters todos by category has correct number of todos", () => {
-        expect(component.filterTodos( null, null, null, "homework").length).toBe(1);
+        component.todoCategory = "homework";
+        component.filterTodos();
+        expect(component.todos.length).toBe(3);
+        expect(component.filteredTodos.length).toBe(1);
     });
 
     it("Multiple filters has correct number of todos", () => {
-        expect(component.filterTodos( "Fry", null, null, "homework").length).toBe(1);
+        component.todoOwner = "Fry"
+        component.todoCategory = "homework";
+        component.filterTodos();
+        expect(component.todos.length).toBe(3);
+        expect(component.filteredTodos.length).toBe(1);
     });
 
 

@@ -2,33 +2,36 @@
 <div class="row">
     <div class="col-md-3" id="leftCol">
         <h1>Todos</h1>
-        <button type="button" class="btn btn-primary" (click)="openModal(newTodoModal)">New Todo</button>
+        <button type="button" class="btn btn-primary btn-block" (click)="openModal(newTodoModal)">New Todo</button>
         <br>
         <div class="form-group">
             <label for="searchInput">Search</label>
-            <input id="searchInput" type="search" class="form-control" (input)="todoBody = $event.target.value" placeholder="Search Todos">
+            <input id="searchInput" type="search" class="form-control" (input)="filterTodos()" [(ngModel)]="todoBody" placeholder="Search Todos">
         </div>
         <div class="form-group">
             <label for="ownerInput">Owner</label>
-            <input id="ownerInput" type="text" class="form-control" [typeahead]="possibleOwners" [(ngModel)]="todoOwner" placeholder="Filter by Owner">
+            <input id="ownerInput" type="text" class="form-control" [typeahead]="possibleOwners" (input)="filterTodos()" [(ngModel)]="todoOwner" placeholder="Filter by Owner">
         </div>
         <div class="form-group">
             <label for="CategoryInput">Category</label>
-            <input id="CategoryInput" type="text" class="form-control" [typeahead]="possibleCategories" [(ngModel)]="todoCategory" placeholder="Filter by Category">
+            <input id="CategoryInput" type="text" class="form-control" [typeahead]="possibleCategories" (input)="filterTodos()" [(ngModel)]="todoCategory" placeholder="Filter by Category">
         </div>
         <div class="form-group">
             <label for="statusInput">Status</label>
-            <select id="statusInput" class="form-control" [(ngModel)]="todoStatus">
+            <select id="statusInput" class="form-control" [(ngModel)]="todoStatus" (ngModelChange)="filterTodos()" >
                 <option selected value="">All</option>
                 <option value="complete">Complete</option>
                 <option value="incomplete">Incomplete</option>
             </select>
         </div>
+        <progressbar [max]="todos ? todos.length : 0" [value]="filteredTodos ? filteredTodos.length : 0">
+            <span style="color:white; white-space:nowrap;">{{filteredTodos ? filteredTodos.length : 0}} / {{todos ? todos.length : 0}}</span>
+        </progressbar>
     </div>
     <div class="col-md-9" id="mainCol">
 
         <div class="card-columns" *ngIf="todos; else todosError">
-            <div class="card" id="users" *ngFor="let todo of this.filterTodos(todoOwner, todoStatus, todoBody, todoCategory)">
+            <div class="card" id="users" *ngFor="let todo of this.filteredTodos">
                 <div class="card-body">
                     <h6 class="card-subtitle mb-2 text-muted">{{ todo.owner }}</h6>
                     <p class="card-text">{{ todo.body }}</p>

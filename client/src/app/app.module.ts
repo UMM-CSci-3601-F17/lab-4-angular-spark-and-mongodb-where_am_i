@@ -15,6 +15,7 @@ import {TodoListService} from "./todos/todo-list.service";
 
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { ModalModule } from 'ngx-bootstrap/modal';
         Routing,
         FormsModule,
         TypeaheadModule.forRoot(),
-        ModalModule.forRoot()
+        ModalModule.forRoot(),
+        ProgressbarModule.forRoot()
     ],
     declarations: [
         AppComponent,
