@@ -172,6 +172,10 @@ public class TodoController {
                     String body = dbO.getString("body");
                     String category = dbO.getString("category");
 
+                    if (owner == null || body == null || category == null) {
+                        throw new NullPointerException();
+                    }
+
                     System.err.println("Adding new todo [owner=" + owner + ", status=" + status + " body=" + body + " category=" + category + ']');
                     return addNewTodo(owner, status, body, category);
                 }
