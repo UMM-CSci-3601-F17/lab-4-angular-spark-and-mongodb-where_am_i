@@ -6,6 +6,7 @@ import {Todo} from "./todo";
 import {TodoListService} from "./todo-list.service";
 
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+import { ModalModule } from 'ngx-bootstrap/modal';
 import {FormsModule} from '@angular/forms';
 
 describe('TodoListComponent', () => {
@@ -44,7 +45,7 @@ describe('TodoListComponent', () => {
         };
 
         TestBed.configureTestingModule({
-            imports:[FormsModule, TypeaheadModule.forRoot()],
+            imports:[FormsModule, TypeaheadModule.forRoot(), ModalModule.forRoot()],
             declarations: [TodoListComponent],
             providers: [{provide: TodoListService, useValue: todoListServiceStub}]
         })
