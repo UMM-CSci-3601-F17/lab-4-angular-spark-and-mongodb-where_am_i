@@ -1,7 +1,7 @@
 <br>
 <div class="row">
     <div class="col-md-3" id="leftCol">
-        <h1>Todos</h1>
+        <h1 id="title">Todos</h1>
         <button type="button" class="btn btn-primary btn-block" (click)="openModal(newTodoModal)">New Todo</button>
         <br>
         <div class="form-group">
@@ -33,12 +33,12 @@
         <div class="card-columns" *ngIf="todos; else todosError">
             <div class="card" id="users" *ngFor="let todo of this.filteredTodos">
                 <div class="card-body">
-                    <h6 class="card-subtitle mb-2 text-muted">{{ todo.owner }}</h6>
-                    <p class="card-text">{{ todo.body }}</p>
+                    <h6 class="card-subtitle mb-2 text-muted todoOwner">{{ todo.owner }}</h6>
+                    <p class="card-text todoBody">{{ todo.body }}</p>
                 </div>
                 <div class="card-footer">
-                    <span class="badge" [class.badge-success]="todo.status" [class.badge-danger]="!todo.status">{{ todo.status ? "Complete" : "Incomplete" }}</span>
-                    <span class="badge badge-secondary">{{ todo.category }}</span>
+                    <span class="badge todoStatus" [class.badge-success]="todo.status" [class.badge-danger]="!todo.status">{{ todo.status ? "Complete" : "Incomplete" }}</span>
+                    <span class="badge badge-secondary todoCategory">{{ todo.category }}</span>
                 </div>
             </div>
         </div>
