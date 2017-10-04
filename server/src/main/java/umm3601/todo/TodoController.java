@@ -1,6 +1,8 @@
 package umm3601.todo;
 
 import com.google.gson.Gson;
+import com.mongodb.BasicDBObject;
+import com.mongodb.MongoException;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -137,6 +139,73 @@ public class TodoController {
         }
 
         return JSON.serialize(matchingTodos);
+    }
+
+    /**
+     *
+     * @param req
+     * @param res
+     * @return
+     */
+    public boolean addNewTodo(Request req, Response res)
+    {
+
+        res.type("application/json");
+        Object o = JSON.parse(req.body());
+        try {
+            if(o.getClass().equals(BasicDBObject.class))
+            {
+                try {
+                    BasicDBObject dbO = (BasicDBObject) o;
+
+                    String owner = dbO.getString("owner");
+                    //For some reason age is a string right now, caused by angular.
+                    //This is a problem and should not be this way but here ya go
+                    boolean status = dbO.getBoolean("status");
+                    String body = dbO.getString("body");
+                    String category = dbO.getString("category");
+
+                    System.err.println("Adding new todo [owner=" + owner + ", status=" + status + " body=" + body + " category=" + category + ']');
+                    return addNewTodo(owner, status, body, category);
+                }
+                catch(NullPointerException e)
+                {
+                    System.err.println("A value was malformed or omitted, new user request failed.");
+                    return false;
+                }
+
+            }
+            else
+            {
+                System.err.println("Expected BasicDBObject, received " + o.getClass());
+                return false;
+            }
+        }
+        catch(RuntimeException ree)
+        {
+            ree.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean addNewTodo(String owner, boolean status, String body, String category) {
+
+        Document newTodo = new Document();
+        newTodo.append("owner", owner);
+        newTodo.append("status", status);
+        newTodo.append("body", body);
+        newTodo.append("category", category);
+
+        try {
+            todoCollection.insertOne(newTodo);
+        }
+        catch(MongoException me)
+        {
+            me.printStackTrace();
+            return false;
+        }
+
+        return true;
     }
 
 }
