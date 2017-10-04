@@ -14,6 +14,7 @@ import { TodoListComponent } from './todos/todo-list.component';
 import {TodoListService} from "./todos/todo-list.service";
 
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
         JsonpModule,
         Routing,
         FormsModule,
-        TypeaheadModule.forRoot()
+        TypeaheadModule.forRoot(),
+        ModalModule.forRoot()
     ],
     declarations: [
         AppComponent,
