@@ -1,6 +1,12 @@
 <h1>Todos</h1>
+
+
+<input type="text" (input)="todoOwner = $event.target.value">
+<input type="text" (input)="todoBody = $event.target.value">
+<input type="text" (input)="todoCategory = $event.target.value">
+
 <ul class="list-group" *ngIf="todos; else todosError">
-    <li id="users" *ngFor="let todo of this.filterTodos()" class="list-group-item">
+    <li id="users" *ngFor="let todo of this.filterTodos(todoOwner, todoStatus, todoBody, todoCategory)" class="list-group-item">
         <ul>
             <li>id: {{ todo._id }}</li>
             <li>owner: {{ todo.owner }}</li>
