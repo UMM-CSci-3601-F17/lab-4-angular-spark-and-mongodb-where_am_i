@@ -17,7 +17,7 @@
         </div>
         <div class="form-group">
             <label for="statusInput">Status</label>
-            <select id="statusInput" class="form-control" (input)="onStatusChange($event.target.value)">
+            <select id="statusInput" class="form-control" [(ngModel)]="todoStatus">
                 <option selected value="">All</option>
                 <option value="complete">Complete</option>
                 <option value="incomplete">Incomplete</option>
@@ -27,7 +27,7 @@
     <div class="col-md-9" id="mainCol">
 
         <div class="card-columns" *ngIf="todos; else todosError">
-            <div class="card" id="users" *ngFor="let todo of this.filterTodos(todoOwner, todoBody, todoCategory)">
+            <div class="card" id="users" *ngFor="let todo of this.filterTodos(todoOwner, todoStatus, todoBody, todoCategory)">
                 <div class="card-body">
                     <h6 class="card-subtitle mb-2 text-muted">{{ todo.owner }}</h6>
                     <p class="card-text">{{ todo.body }}</p>

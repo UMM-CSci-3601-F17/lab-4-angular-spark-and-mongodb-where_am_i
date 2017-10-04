@@ -64,7 +64,7 @@ describe('TodoListComponent', () => {
     });
 
 
-    it("contains all the users", () => {
+    it("contains all the todos", () => {
         expect(component.todos.length).toBe(3);
     });
 
@@ -85,15 +85,15 @@ describe('TodoListComponent', () => {
     });
 
     it("filters todos by owner has correct number of todos", () => {
-        expect(component.filterTodos( "Fry", null, null).length).toBe(2);
+        expect(component.filterTodos( "Fry",null, null, null).length).toBe(2);
     });
 
     it("filters todos by category has correct number of todos", () => {
-        expect(component.filterTodos( null, null, "homework").length).toBe(1);
+        expect(component.filterTodos( null, null, null, "homework").length).toBe(1);
     });
 
     it("Multiple filters has correct number of todos", () => {
-        expect(component.filterTodos( "Fry", null, "homework").length).toBe(1);
+        expect(component.filterTodos( "Fry", null, null, "homework").length).toBe(1);
     });
 
 
