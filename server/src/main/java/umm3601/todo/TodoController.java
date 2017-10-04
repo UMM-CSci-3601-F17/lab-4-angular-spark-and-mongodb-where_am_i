@@ -3,9 +3,13 @@ package umm3601.todo;
 import com.google.gson.Gson;
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoException;
+import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Accumulators;
+import com.mongodb.client.model.Aggregates;
+import com.mongodb.client.model.Projections;
 import com.mongodb.client.model.Sorts;
 import com.mongodb.util.JSON;
 import org.bson.Document;
@@ -13,9 +17,12 @@ import org.bson.types.ObjectId;
 import spark.Request;
 import spark.Response;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -208,4 +215,28 @@ public class TodoController {
         return true;
     }
 
+    public String todoSummary(Request req, Response res) {
+        res.type("application/json");
+        AggregateIterable<Document> completePercentTotal = completePercentbyField(null);
+        AggregateIterable<Document> completePercentCategory = completePercentbyField("$category");
+        AggregateIterable<Document> completePercentOwner = completePercentbyField("$owner");
+
+        Document summary = new Document();
+        summary.append("percentToDosComplete", completePercentTotal.first().get("percentComplete"));
+        summary.append("categoriesPercentComplete", StreamSupport.stream(completePercentCategory.spliterator(), false).collect(Collectors.toMap(x -> x.get("_id"), x -> x.get("percentComplete"))));
+        summary.append("ownersPercentComplete", StreamSupport.stream(completePercentOwner.spliterator(), false).collect(Collectors.toMap(x -> x.get("_id"), x -> x.get("percentComplete"))));
+
+        return summary.toJson();
+    }
+
+    public AggregateIterable<Document> completePercentbyField(String field) {
+        return todoCollection.aggregate(
+            Arrays.asList(
+                Aggregates.group(field, Accumulators.sum("count", 1), Accumulators.sum("numberComplete", new Document("$cond", Arrays.asList("$status", 1, 0)))),
+                Aggregates.project(Projections.fields(
+                    Projections.computed("percentComplete",
+                        new Document("$divide", Arrays.asList("$numberComplete", "$count")))
+                ))
+            ));
+    }
 }
