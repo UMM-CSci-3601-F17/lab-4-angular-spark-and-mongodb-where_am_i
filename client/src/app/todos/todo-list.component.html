@@ -1,27 +1,57 @@
-<h1>Todos</h1>
+<br>
+<div class="row">
+    <div class="col-md-3" id="leftCol">
+        <h1>Todos</h1>
+        <br>
+        <div class="form-group">
+            <label for="searchInput">Search</label>
+            <input id="searchInput" type="search" class="form-control" (input)="todoBody = $event.target.value" placeholder="Search Todos">
+        </div>
+        <div class="form-group">
+            <label for="ownerInput">Owner</label>
+            <input id="ownerInput" type="text" class="form-control" [typeahead]="possibleOwners" [(ngModel)]="todoOwner" placeholder="Filter by Owner">
+        </div>
+        <div class="form-group">
+            <label for="CategoryInput">Category</label>
+            <input id="CategoryInput" type="text" class="form-control" [typeahead]="possibleCategories" [(ngModel)]="todoCategory" placeholder="Filter by Category">
+        </div>
+        <div class="form-group">
+            <label for="statusInput">Status</label>
+            <select id="statusInput" class="form-control" (input)="onStatusChange($event.target.value)">
+                <option selected value="">All</option>
+                <option value="complete">Complete</option>
+                <option value="incomplete">Incomplete</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-md-9" id="mainCol">
+
+        <div class="card-columns" *ngIf="todos; else todosError">
+            <div class="card" id="users" *ngFor="let todo of this.filterTodos(todoOwner, todoBody, todoCategory)">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted">{{ todo.owner }}</h6>
+                    <p class="card-text">{{ todo.body }}</p>
+                </div>
+                <div class="card-footer">
+                    <span class="badge" [class.badge-success]="todo.status" [class.badge-danger]="!todo.status">{{ todo.status ? "Complete" : "Incomplete" }}</span>
+                    <span class="badge badge-secondary">{{ todo.category }}</span>
+                </div>
+            </div>
+        </div>
+
+        <ng-template #todosError>
+            <p>
+                There was a problem loading the todos. Possibly the server is down or perhaps there are network issues.
+            </p>
+            <p>
+                Please wait a bit and try again.
+            </p>
+        </ng-template>
 
 
-<input type="text" (input)="todoOwner = $event.target.value">
-<input type="text" (input)="todoBody = $event.target.value">
-<input type="text" (input)="todoCategory = $event.target.value">
+    </div>
+</div>
 
-<ul class="list-group" *ngIf="todos; else todosError">
-    <li id="users" *ngFor="let todo of this.filterTodos(todoOwner, todoStatus, todoBody, todoCategory)" class="list-group-item">
-        <ul>
-            <li>id: {{ todo._id }}</li>
-            <li>owner: {{ todo.owner }}</li>
-            <li>status: {{ todo.status }}</li>
-            <li>body: {{ todo.body }}</li>
-            <li>category: {{ todo.category }}</li>
-        </ul>
-    </li>
-</ul>
 
-<ng-template #todosError>
-    <p>
-        There was a problem loading the todos. Possibly the server is down or perhaps there are network issues.
-    </p>
-    <p>
-        Please wait a bit and try again.
-    </p>
-</ng-template>
+
+

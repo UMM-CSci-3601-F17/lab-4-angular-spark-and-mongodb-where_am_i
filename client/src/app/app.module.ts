@@ -13,6 +13,8 @@ import {APP_BASE_HREF} from "@angular/common";
 import { TodoListComponent } from './todos/todo-list.component';
 import {TodoListService} from "./todos/todo-list.service";
 
+import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+
 
 @NgModule({
     imports: [
@@ -21,6 +23,7 @@ import {TodoListService} from "./todos/todo-list.service";
         JsonpModule,
         Routing,
         FormsModule,
+        TypeaheadModule.forRoot()
     ],
     declarations: [
         AppComponent,
