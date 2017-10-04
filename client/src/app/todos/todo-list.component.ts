@@ -1,9 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, TemplateRef} from '@angular/core';
 import {Todo} from "./todo";
 import {TodoListService} from "./todo-list.service";
+import {BsModalRef, BsModalService} from "ngx-bootstrap";
 
 @Component({
     selector: 'todo-list-component',
+    styleUrls: ['./todo-list.component.css'],
     templateUrl: './todo-list.component.html',
     providers: []
 })
@@ -12,10 +14,37 @@ export class TodoListComponent implements OnInit {
     public todos: Todo[];
     public filteredTodos: Todo[];
 
+    public todoAddSuccess : boolean = false;
+
+    public todoOwner: string;
     public todoStatus: string = "";
+    public todoBody: string;
+    public todoCategory: string;
+
+    public newTodoOwner: string;
+    public newTodoStatus: string = "incomplete";
+    public newTodoBody: string;
+    public newTodoCategory: string;
+
+    public modalRef: BsModalRef;
 
 
-    constructor(private todoListService: TodoListService) {
+
+    constructor(private todoListService: TodoListService,
+                private modalService: BsModalService) {
+    }
+
+    public openModal(template: TemplateRef<any>) {
+        this.modalRef = this.modalService.show(template);
+    }
+
+    public addNewTodo() {
+        this.todoListService.addNewTodo(this.newTodoOwner, this.newTodoStatus == "complete", this.newTodoBody, this.newTodoCategory).subscribe(
+            succeeded => {
+                this.todoAddSuccess = succeeded;
+                this.refreshTodos();
+            }
+        )
     }
 
     public filterTodos(searchOwner: string, searchStatus: string, searchBody: string, searchCategory: string): Todo[] {
@@ -53,7 +82,7 @@ export class TodoListComponent implements OnInit {
         return this.filteredTodos;
     }
 
-    ngOnInit(): void {
+    refreshTodos(): void {
         this.todoListService.getTodos().subscribe(
             todos => {
                 this.todos = todos;
@@ -63,6 +92,10 @@ export class TodoListComponent implements OnInit {
                 console.log(err);
             }
         );
+    }
+
+    ngOnInit(): void {
+        this.refreshTodos();
     }
 
 }

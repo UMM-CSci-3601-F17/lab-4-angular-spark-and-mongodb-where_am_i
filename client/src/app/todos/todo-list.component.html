@@ -2,6 +2,7 @@
 <div class="row">
     <div class="col-md-3" id="leftCol">
         <h1>Todos</h1>
+        <button type="button" class="btn btn-primary" (click)="openModal(newTodoModal)">New Todo</button>
         <br>
         <div class="form-group">
             <label for="searchInput">Search</label>
@@ -54,4 +55,64 @@
 
 
 
+<ng-template #newTodoModal>
+    <div class="modal-header">
+        <h5 class="modal-title pull-left">New Todo</h5>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+        <form #todoForm="ngForm" (ngSubmit)="addNewTodo(); todoForm.reset(); todoForm.controls['newTodoStatus'].patchValue('incomplete')">
+            <div class="modal-body">
+            <div class="row">
+                <div class="col">
 
+            <div class="form-group">
+                <label for="newTodoOwner">Owner</label>
+                <input type="text" class="form-control" id="newTodoOwner"
+                       required
+                       [(ngModel)]="newTodoOwner" name="newTodoOwner" #newtodoowner="ngModel">
+                <div [hidden]="newtodoowner.valid || newtodoowner.pristine" class="alert alert-danger">
+                    Owner is required
+                </div>
+            </div>
+
+                </div>
+
+                <div class="col">
+            <div class="form-group">
+                <label for="newTodoStatus">Status</label>
+                <select id="newTodoStatus" class="form-control" [(ngModel)]="newTodoStatus" required name="newTodoStatus">
+                    <option value="complete">Complete</option>
+                    <option selected value="incomplete">Incomplete</option>
+                </select>
+            </div>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label for="newTodoBody">Body</label>
+                <textarea type="text" class="form-control" id="newTodoBody"
+                       required rows="5"
+                          [(ngModel)]="newTodoBody" name="newTodoBody" #newtodobody="ngModel"></textarea>
+                <div [hidden]="newtodobody.valid || newtodobody.pristine" class="alert alert-danger">
+                    Body is required
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="newTodoCategory">Category</label>
+                <input type="text" class="form-control" id="newTodoCategory"
+                       required
+                       [(ngModel)]="newTodoCategory" name="newTodoCategory" #newtodocategory="ngModel">
+                <div [hidden]="newtodocategory.valid || newtodocategory.pristine" class="alert alert-danger">
+                    Category is required
+                </div>
+            </div>
+            </div>
+            <div class="modal-footer">
+            <button [disabled]="!todoForm.form.valid" type="submit" class="btn btn-success" (click)="modalRef.hide()">Submit</button>
+            </div>
+        </form>
+</ng-template>
