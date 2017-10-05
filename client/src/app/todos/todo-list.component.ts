@@ -60,7 +60,6 @@ export class TodoListComponent implements OnInit {
         if(this.todoStatus != null && this.todoStatus != "") {
             console.log(this.todoStatus);
             var searchStatusbool : boolean = this.todoStatus == "complete";
-            console.log(searchStatusbool);
             this.filteredTodos = this.filteredTodos.filter(todo => {
                 return !this.todoStatus || todo.status == searchStatusbool;
             })
