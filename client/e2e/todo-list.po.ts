@@ -21,6 +21,20 @@ export class TodoListPage {
         }
     }
 
+    clickButton(id: string) {
+        let e = element(by.id(id));
+        e.click();
+    }
+
+    addTodo(owner: string, status: boolean, body: string, category: string) {
+        this.clickButton("newTodoModalButton");
+        this.typeInput("newTodoOwner", owner);
+        this.typeInput("newTodoStatus", status ? "Complete" : "Incomplete", true);
+        this.typeInput("newTodoBody", body);
+        this.typeInput("newTodoCategory", category);
+        this.clickButton("newTodoCreateButton");
+    }
+
     getElementTextByID(id: string) {
         return element(by.id(id)).getText();
     }
@@ -35,5 +49,23 @@ export class TodoListPage {
 
     getTextOfFirstCardElementByClass(htmlClass: string) {
         return this.getAllTodoCards().first().element(by.className(htmlClass)).getText()
+    }
+
+    // from https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
+    randomText(length: number, space?: boolean): string {
+        var text: string = "";
+        var possible: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        if(space)
+            possible += "    ";
+
+        for (var i = 0; i < length; i++)
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+        return text;
+    }
+
+    randomBoolean(): boolean {
+        return Boolean(Math.round(Math.random()));
     }
 }
