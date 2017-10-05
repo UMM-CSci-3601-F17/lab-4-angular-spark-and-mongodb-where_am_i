@@ -1,5 +1,6 @@
 import {TodoListPage} from "./todo-list.po";
 import {browser, element, by} from 'protractor';
+import {before} from "selenium-webdriver/testing";
 
 
 describe('angular-spark-lab-todos', () => {
@@ -7,22 +8,21 @@ describe('angular-spark-lab-todos', () => {
 
     beforeEach(() => {
         page = new TodoListPage();
+        page.navigateTo();
     });
 
     it('should have title h1', () => {
-        page.navigateTo();
         expect(page.getTodosTitle()).toEqual('Todos');
     });
 
     it('should type something in the search box and check that it returned correct element', () => {
-        page.navigateTo();
         page.typeInput("searchInput","In sunt ex non tempor cillum");
-        expect(page.getTextOfFirstCardElementByClass("todoOwner")).toEqual("Blanche");
-        expect(page.getTextOfFirstCardElementByClass("todoBody")).toEqual("In sunt ex non tempor cillum commodo amet incididunt anim qui commodo quis. Cillum non labore ex sint esse.");
+        page.getAllTodoCards().each(e => {
+            expect(e.element(by.className("todoBody")).getText()).toContain("In sunt ex non tempor cillum");
+        })
     });
 
     it('should type something in the owner filter and check that it returned correct elements', () => {
-        page.navigateTo();
         page.typeInput("ownerInput","Fry");
 
         page.getAllTodoCards().each(e => {
@@ -31,8 +31,7 @@ describe('angular-spark-lab-todos', () => {
     });
 
     it('should type something in the category filter and check that it returned correct elements', () => {
-        page.navigateTo();
-        page.typeInput("categoryInput","homework");
+        page.typeInput("CategoryInput","homework");
 
         page.getAllTodoCards().each(e => {
             expect(e.element(by.className("todoCategory")).getText()).toEqual("homework");
@@ -41,7 +40,6 @@ describe('angular-spark-lab-todos', () => {
     });
 
     it('should change the status filter to complete and check that it returned correct elements', () => {
-        page.navigateTo();
         page.typeInput("statusInput","Complete", true);
 
         page.getAllTodoCards().each(e => {
@@ -51,7 +49,6 @@ describe('angular-spark-lab-todos', () => {
     });
 
     it('should change the status filter to incomplete and check that it returned correct elements', () => {
-        page.navigateTo();
         page.typeInput("statusInput","Incomplete", true);
 
         page.getAllTodoCards().each(e => {
@@ -61,8 +58,7 @@ describe('angular-spark-lab-todos', () => {
     });
 
     it('should use multiple filters and check that it returned correct elements', () => {
-        page.navigateTo();
-        page.typeInput("categoryInput","video games");
+        page.typeInput("CategoryInput","video games");
         page.typeInput("ownerInput","Roberta");
         page.typeInput("statusInput","Incomplete", true);
 
