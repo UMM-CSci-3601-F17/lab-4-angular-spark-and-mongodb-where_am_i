@@ -52,12 +52,9 @@ export class TodoListPage {
     }
 
     // from https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
-    randomText(length: number, space?: boolean): string {
+    randomText(length: number): string {
         var text: string = "";
         var possible: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-        if(space)
-            possible += "    ";
 
         for (var i = 0; i < length; i++)
             text += possible.charAt(Math.floor(Math.random() * possible.length));

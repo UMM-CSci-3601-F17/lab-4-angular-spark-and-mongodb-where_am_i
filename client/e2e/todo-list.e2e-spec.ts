@@ -89,7 +89,7 @@ describe('angular-spark-lab-todos', () => {
     it('should add a single todo and have that todo', () => {
         var owner = page.randomText(6);
         var status = page.randomBoolean();
-        var body = page.randomText(150, true);
+        var body = page.randomText(150);
         var category = page.randomText(6);
 
         page.addTodo(owner, status, body, category);
