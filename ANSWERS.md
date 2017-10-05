@@ -1,20 +1,20 @@
 # CSCI 3601 Lab #4 - Answers 
 
-##1.What do we do in the server and UserController constructor to set up our connection to the development database?
-We re-implement the ToDo API. This time pulling data from MongoDB rather than from a flat JSON file.
-
-##2.How do we retrieve a user by ID in the UserController.getUser(String) method?
-It creates a "document" type object and the document type object can be iterated.It goes through all the user and try to find one that matches the ID.
-
-##3.How do we retrieve all the users with a given age in UserController.getUser(Map...)?What's the role of filterDoc in that method?
-By detecting the word "age" in the input map, the client will look for the users that have the age matched. filterDoc is a Document type
-that can be iterated for filtering. It matches the result by the parameter "age"
-
-##4.What are these Document objects that we use in the UserController? Why and how are we using them?
-They are temporary objects, We use them to iterate and filter our data.
-
-##5.what does UserControllerSpec.clearAndPopulateDb do?
-clearAndPopulateDb is the method we are using to avoid for testing on the actual data. It give new data instead of letting us using the data from database.
-
-##6.What's being tested in UserControllerSpec.getUsersWhoAre37()? How is that being tested?
-It works exactly as the "age" parameter. It filter out the users whose age is 37.
+1. What do we do in the `Server` and `UserController` constructors to set up our connection to the development database?
+    - In the `Server` class, a MongoClient object is created and used to get the database we are using. The database is passed to the `UserController` class when an instance of it is created. The name of the database connected to is stored in a String called `databaseName `. 
+    - In `UserController` the database passed in is used to get the `users` collection.
+2. How do we retrieve a user by ID in the `UserController.getUser(String)` method?
+    - It creates a `FindIteratable` that has mongo search the `userCollection` and look for the specific ID that was passed in.
+    - It takes the first result in that iteratable and returns that user data. If the iteratable does not contain anything it returns null.
+3. How do we retrieve all the users with a given age in `UserController.getUsers(Map...)`? What's the role of `filterDoc` in that method?
+    - The `filterDoc` is a document that is used to list all the filters mongo will apply.
+    - It checks if an age was passed into the request and if so adds `{"age", targetAge}` to the `filterDoc` where `targetAge` is the passed in string age converted to an integer.
+    - It then runs the mongo `find`method on the user collection passing in `filterDoc` and returns the returned `FindIteratable<Document>` as JSON.
+4. What are these `Document` objects that we use in the `UserController`? Why and how are we using them?
+    - a `Document` from Mongo BSON is a wrapper around a Map that is used to store key pairs. We are using them to store filter paramaters and user data.
+5. What does `UserControllerSpec.clearAndPopulateDb` do?
+    - It clears the test database and populates it with a defined set of new data.
+    - It allows us to avoid for testing on the actual data. It gives a new set of data in the test database for each test.
+6. What's being tested in `UserControllerSpec.getUsersWhoAre37()`? How is that being tested?
+    - Its testing the age filter by passing the argument of `age=37` to the `userController.getUsers` method.
+    - It checks that the returned array of users contains 2 users and that their names are the correct names of those with that age.
