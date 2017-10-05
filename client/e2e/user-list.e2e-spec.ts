@@ -1,6 +1,6 @@
 import {UserPage} from './user-list.po';
-import {browser, protractor} from 'protractor';
-
+//import {browser, protractor} from 'protractor';
+/*
 let origFn = browser.driver.controlFlow().execute;
 
 //https://hassantariqblog.wordpress.com/2015/11/09/reduce-speed-of-angular-e2e-protractor-tests/
@@ -15,9 +15,9 @@ browser.driver.controlFlow().execute = function () {
     });
 
     return origFn.apply(browser.driver.controlFlow(), args);
-};
+};*/
 
-describe('angular-spark-lab', () => {
+describe('angular-spark-lab-users', () => {
     let page: UserPage;
 
     beforeEach(() => {

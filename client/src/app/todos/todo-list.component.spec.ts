@@ -94,11 +94,32 @@ describe('TodoListComponent', () => {
         expect(component.filteredTodos.length).toBe(2);
     });
 
+    it("filters todos by body has correct number of todos", () => {
+        component.todoBody = "sunt ex non tempor cillum";
+        component.filterTodos();
+        expect(component.todos.length).toBe(3);
+        expect(component.filteredTodos.length).toBe(1);
+    });
+
     it("filters todos by category has correct number of todos", () => {
         component.todoCategory = "homework";
         component.filterTodos();
         expect(component.todos.length).toBe(3);
         expect(component.filteredTodos.length).toBe(1);
+    });
+
+    it("filters todos by status complete has correct number of todos", () => {
+        component.todoStatus = "complete";
+        component.filterTodos();
+        expect(component.todos.length).toBe(3);
+        expect(component.filteredTodos.length).toBe(1);
+    });
+
+    it("filters todos by status incomplete has correct number of todos", () => {
+        component.todoStatus = "incomplete";
+        component.filterTodos();
+        expect(component.todos.length).toBe(3);
+        expect(component.filteredTodos.length).toBe(2);
     });
 
     it("Multiple filters has correct number of todos", () => {
