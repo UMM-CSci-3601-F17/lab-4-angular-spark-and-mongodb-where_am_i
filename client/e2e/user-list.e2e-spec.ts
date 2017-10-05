@@ -42,7 +42,7 @@ describe('angular-spark-lab-users', () => {
             page.selectUpKey();
         }
 
-        expect(page.getFirstUser()).toEqual("Bolton Monroe is 27 years old");
+        expect(page.getFirstUser()).toEqual("Stokes Clayton is 27 years old");
 
         page.typeAName("Merrill");
 
